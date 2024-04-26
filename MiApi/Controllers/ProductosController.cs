@@ -19,11 +19,19 @@ namespace MiApi.Controllers
             _productos = productos;
         }
 
-        [HttpGet]
+        [HttpGet("todos")]
         public async Task <ActionResult<List<ProductosModel>>> Get()
         {
             //var Consume mucho recurso
             List<ProductosModel> lista = await _productos.ListaProductos();
+            return lista;
+        }
+
+        [HttpGet("{id}")]
+        public async Task<ActionResult<List<ProductosModel>>> GetID(int id)
+        {
+            //var Consume mucho recurso
+            List<ProductosModel> lista = await _productos.ListaProductoID(id);
             return lista;
         }
 
@@ -33,5 +41,13 @@ namespace MiApi.Controllers
             bool succes = await _productos.GuardarProductos(producto);
             return succes;
         }
+
+        [HttpPut]
+        public async Task<ActionResult<bool>> EditarProductos(ProductosModel producto)
+        {
+            bool succes = await _productos.EditarProductos(producto);
+            return succes;
+        }
+
     }
 }

@@ -29,6 +29,24 @@ namespace MiApi.Data
             }
         }
 
+        public async Task<List<ProductosModel>> ListaProductoID(int id)
+        {
+            var parameters = new DynamicParameters();
+            parameters.Add("@id", id);
+            try
+            {
+                List<ProductosModel> lst = (await conexion.db.QueryAsync<ProductosModel>("sp_listarProductoID", parameters, commandType: CommandType.StoredProcedure)).ToList();
+
+                return lst;
+            }
+            catch (Exception ex)
+            {
+                //return ex.ToString();
+                throw;
+            }
+        }
+
+
         //Guardar productos
         public async Task<bool> GuardarProductos(ProductosModel productos)
         {
@@ -49,6 +67,25 @@ namespace MiApi.Data
             }
         }
 
+        public async Task<bool> EditarProductos(ProductosModel productos)
+        {
+            try
+            {
+                var parameters = new DynamicParameters();
+                parameters.Add("@id", productos.id);
+                parameters.Add("@descripcion", productos.descripcion);
+                parameters.Add("@precio", productos.precio);
+
+                await conexion.db.QueryAsync<ProductosModel>("sp_editarProductos", parameters, commandType: CommandType.StoredProcedure);
+                return true;
+
+            }
+            catch (Exception ex)
+            {
+                return false;
+                throw;
+            }
+        }
 
 
 

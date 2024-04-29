@@ -9,6 +9,7 @@ namespace MiApi.Business
         
         //Capa de logica
 
+        //Listar todos los productos
         public async Task<List<ProductosModel>> ListaProductos()
         {
             try
@@ -23,6 +24,7 @@ namespace MiApi.Business
             }
         }
 
+        //Listar un producto por id
         public async Task<List<ProductosModel>> ListaProductoID(int id)
         {
             try
@@ -37,6 +39,7 @@ namespace MiApi.Business
             }
         }
 
+        //Guardar productos
         public async Task<bool> GuardarProductos(ProductosModel producto)
         {
             try
@@ -51,12 +54,28 @@ namespace MiApi.Business
             }
         }
 
+        //Editar productos
         public async Task<bool> EditarProductos(ProductosModel producto)
         {
             try
             {
                 // Llama directamente al método de datos para agregar el producto
                 bool success = await data.EditarProductos(producto);
+                return success;
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
+
+        //Eliminar productos por el ID
+        public async Task<bool> EliminarProductos(int id)
+        {
+            try
+            {
+                // Llama directamente al método de datos para agregar el producto
+                bool success = await data.EliminarProductos(id);
                 return success;
             }
             catch (Exception ex)

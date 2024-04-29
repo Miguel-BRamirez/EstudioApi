@@ -29,14 +29,13 @@ namespace MiApi.Data
             }
         }
 
+        //Listar por ID
         public async Task<List<ProductosModel>> ListaProductoID(int id)
         {
-            var parameters = new DynamicParameters();
-            parameters.Add("@id", id);
+            
             try
             {
-                List<ProductosModel> lst = (await conexion.db.QueryAsync<ProductosModel>("sp_listarProductoID", parameters, commandType: CommandType.StoredProcedure)).ToList();
-
+                List<ProductosModel> lst = (await conexion.db.QueryAsync<ProductosModel>("sp_listarProductoID", new { id = id }, commandType: CommandType.StoredProcedure)).ToList();
                 return lst;
             }
             catch (Exception ex)
@@ -46,17 +45,15 @@ namespace MiApi.Data
             }
         }
 
-
         //Guardar productos
         public async Task<bool> GuardarProductos(ProductosModel productos)
         {
             try
             {
-                var parameters = new DynamicParameters();
-                parameters.Add("@descripcion", productos.descripcion);
-                parameters.Add("@precio", productos.precio);
-
-                await conexion.db.QueryAsync<ProductosModel>("sp_guardarProductos", parameters, commandType: CommandType.StoredProcedure);
+                //Cuando le manda el objeto directamente tiene que ser en el mismo orden que el procedure
+                //asi como lo tiene en el procedure y en el modelo esta bien, pero para que lo tenga en cuenta
+                //siempre el mismo orden y el mismo tipo de dato den ambos R  corralo haber
+                await conexion.db.QueryAsync<ProductosModel>("sp_guardarProductos", productos, commandType: CommandType.StoredProcedure);
                 return true;
 
             }
@@ -67,16 +64,13 @@ namespace MiApi.Data
             }
         }
 
+        //Editar productos
         public async Task<bool> EditarProductos(ProductosModel productos)
         {
             try
             {
-                var parameters = new DynamicParameters();
-                parameters.Add("@id", productos.id);
-                parameters.Add("@descripcion", productos.descripcion);
-                parameters.Add("@precio", productos.precio);
 
-                await conexion.db.QueryAsync<ProductosModel>("sp_editarProductos", parameters, commandType: CommandType.StoredProcedure);
+                await conexion.db.QueryAsync<ProductosModel>("sp_editarProductos", productos, commandType: CommandType.StoredProcedure);
                 return true;
 
             }
@@ -87,24 +81,21 @@ namespace MiApi.Data
             }
         }
 
+        //Eliminar productos
+        public async Task<bool> EliminarProductos(int id)
+        {
+            try
+            {
+                await conexion.db.QueryAsync<ProductosModel>("sp_eliminarProductos", new { id = id }, commandType: CommandType.StoredProcedure);
+                return true;
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+            }
+            catch (Exception ex)
+            {
+                return false;
+                throw;
+            }
+        }
 
         /*
          * Manera de hacerlo como el video

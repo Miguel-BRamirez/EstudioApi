@@ -16,9 +16,9 @@ namespace MiApi.Controllers
         }
 
         [HttpPost]
-        public async Task<HomeModel> Login(string correo, string password)
+        public async Task<List<DetallePersona>> Login(string correo, string password)
         {
-            HomeModel succes = await _home.Login(correo, password);
+            List<DetallePersona> succes = await _home.Login(correo, password);
             return succes;
         }
     }

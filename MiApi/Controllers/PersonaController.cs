@@ -22,5 +22,29 @@ namespace MiApi.Controllers
             bool succes = await _persona.InsertarPersona(persona);
             return succes;
         }
+
+        [HttpGet]
+        [Route("ListarPersonas")]
+        public async Task<List<DetallePersona>> ListarPersonas()
+        {
+            List<DetallePersona> lst = await _persona.ListarPersonas();
+            return lst;
+        }
+
+        [HttpPut]
+        [Route("EditarPersona")]
+        public async Task<List<DetallePersona>> EditarPersona(DetallePersona persona)
+        {
+            List<DetallePersona> lst = await _persona.EditarPersona(persona);
+            return lst;
+        }
+
+        [HttpDelete]
+        [Route("EliminarPersona")]
+        public async Task<bool> EliminarPersona(int id)
+        {
+            bool rspt = await _persona.EliminarPersona(id);
+            return rspt;
+        }
     }
 }

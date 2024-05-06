@@ -8,12 +8,12 @@ namespace MiApi.Business
     {
         public HomeData data = new HomeData();
 
-        public async Task<HomeModel> Login(string correo, string password)
+        public async Task<List<DetallePersona>> Login(string correo, string password)
         {
             try
             {
                 //Que esta funcion retorne el id de la persona y el idEstado de la persona
-                HomeModel result = await data.Login(correo, password);
+                var result = await data.Login(correo, password);
 
 
                 if (result != null)
@@ -27,6 +27,7 @@ namespace MiApi.Business
                     {
                         //Modelo
                         List<DetallePersona> info = await data.ConsultarDetallePersona(result.idPersona);
+                        return info;
                         
                      }
                     //Aqui va agregando la logica, esa es la logica que tiene que tener en esta capa
@@ -36,7 +37,6 @@ namespace MiApi.Business
                     //Mensaje de que no existe persona en el sistema
                      throw new Exception("No se encontró la persona en el sistema.");
                 }
-                return result;
 
             }
             catch (Exception)
